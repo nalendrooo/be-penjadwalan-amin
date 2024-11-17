@@ -13,6 +13,12 @@ const PORT = process.env.PORT || 9000
 
 app.use(cors({ credentials: true, origin: '*' }))
 app.use(express.json())
+app.get('/', (req, res) => {
+    res.status(200).json({
+        status: 'success',
+        message: 'Penjadwalan Amin'
+    })
+})
 app.use('/backdoor', backdoorRoute);
 app.use('/users', usersRoute);
 app.use('/upload', uploadRoute);
