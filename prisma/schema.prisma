@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+model User {
+  id        Int      @id @unique @default(autoincrement())
+  nama      String?
+  email     String
+  password  String
+  telephone String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userRole          UserRole[]
+  classes           Class[]
+  mataPelajaranGuru MataPelajaranGuru[]
+  classStudent      ClassStudent[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Role {
+  id       Int        @id @default(autoincrement())
+  nama     String
+  isActive Boolean    @default(true) @map("is_active")
+  users    UserRole[]
+
+  @@map("role")
+}
+
+model UserRole {
+  id       Int     @id @default(autoincrement())
+  userId   Int     @map("user_id")
+  roleId   Int     @map("role_id")
+  isActive Boolean @default(true) @map("is_active")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@map("user_role")
+}
+
+model Days {
+  id            Int             @id @default(autoincrement())
+  title         String
+  ScheduleClass ScheduleClass[]
+
+  @@map("days")
+}
+
+model MataPelajaran {
+  id       Int     @id @default(autoincrement())
+  title    String
+  isActive Boolean @default(true) @map("is_active")
+
+  mataPelajaranGuru MataPelajaranGuru[]
+
+  @@map("mata_pelajaran")
+}
+
+model MataPelajaranGuru {
+  id              Int @id @default(autoincrement())
+  mataPelajaranId Int @map("mata_pelajaran_id")
+  userId          Int @map("user_id")
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  mataPelajaran MataPelajaran @relation(fields: [mataPelajaranId], references: [id])
+
+  @@map("mata_pelajaran_guru")
+}
+
+model Class {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  cover       String
+  userId      Int?     @map("user_id")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user            User?           @relation(fields: [userId], references: [id])
+  scheduleClasses ScheduleClass[]
+  Materi          Materi[]
+  classStudent    ClassStudent[]
+
+  @@map("class")
+}
+
+model ClassStudent {
+  id      Int @id @default(autoincrement())
+  classId Int @map("class_id")
+  userId  Int @map("user_id")
+
+  class   Class @relation(fields: [classId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
+
+  @@map("class_student")
+}
+
+model ScheduleClass {
+  id        Int      @id @default(autoincrement())
+  classId   Int      @map("class_id")
+  dayId     Int      @map("day_id")
+  startTime DateTime @map("start_time") @db.Time
+  endTime   DateTime @map("end_time") @db.Time
+
+  class Class @relation(fields: [classId], references: [id])
+  day   Days  @relation(fields: [dayId], references: [id])
+
+  @@map("schedule_class")
+}
+
+model Materi {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  filename    String
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  classId     Int      @map("class_id")
+
+  class Class @relation(fields: [classId], references: [id])
+
+  @@map("materi")
+}
