@@ -98,7 +98,7 @@ export const deleteMateri = async (req, res) => {
 };
 
 export const getMateriOnClass = async (req, res) => {
-    const { id } = req.params
+    const { params } = req
 
     const cekKelas = await kelasRepository.getKelasById({
         id: Number(params.id)
@@ -112,7 +112,7 @@ export const getMateriOnClass = async (req, res) => {
     }
 
     const data = await materiRepository.getMateriOnClass({
-        id: Number(id)
+        id: Number(params.id)
     })
 
     return res.status(200).json({
@@ -212,7 +212,7 @@ export const getSiswaInKelas = async (req, res) => {
     }
 
     const data = await kelasSiswaRepository.getSiswaInKelas({
-        id: Number(params.id)
+        kelasId: Number(params.id)
     })
 
     return res.status(200).json({

@@ -104,18 +104,18 @@ model ClassStudent {
   classId Int @map("class_id")
   userId  Int @map("user_id")
 
-  class   Class @relation(fields: [classId], references: [id])
-  user    User  @relation(fields: [userId], references: [id])
+  class Class @relation(fields: [classId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
 
   @@map("class_student")
 }
 
 model ScheduleClass {
-  id        Int      @id @default(autoincrement())
-  classId   Int      @map("class_id")
-  dayId     Int      @map("day_id")
-  startTime DateTime @map("start_time") @db.Time
-  endTime   DateTime @map("end_time") @db.Time
+  id        Int    @id @default(autoincrement())
+  classId   Int    @unique @map("class_id")
+  dayId     Int    @map("day_id")
+  startTime String @map("start_time")
+  endTime   String @map("end_time")
 
   class Class @relation(fields: [classId], references: [id])
   day   Days  @relation(fields: [dayId], references: [id])

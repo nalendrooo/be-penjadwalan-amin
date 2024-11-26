@@ -11,6 +11,8 @@ route.get('/guru', adminService.getAllGuru);
 route.get('/siswa', adminService.getAllSiswa);
 route.get('/kelas', adminService.getAllKelas);
 route.patch('/kelas/:id/guru', validateRequest(adminSchema.addGuruToKelasSchema), adminService.addGuruToKelas);
+route.post('/kelas/:id/jadwal', validateRequest(adminSchema.jadwalKelasSchema), adminService.createJadwalKelas);
+route.put('/kelas/:id/jadwal', validateRequest(adminSchema.jadwalKelasSchema), adminService.updateJadwalKelas);
 route.post('/kelas', validateRequest(adminSchema.createKelasSchema), adminService.createClass);
 route.post('/guru/register/:role_id', validateRequest(usersSchema.createUserSchema), usersService.createUser);
 

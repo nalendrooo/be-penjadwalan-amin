@@ -11,3 +11,9 @@ export const createKelasSchema = Joi.object({
 export const addGuruToKelasSchema = Joi.object({
     guruId: Joi.number().required().messages(joiGeneralMessage),
 })
+
+export const jadwalKelasSchema = Joi.object({
+    dayId: Joi.number().required().messages(joiGeneralMessage),
+    startTime: Joi.string().required().messages(joiGeneralMessage),
+    endTime: Joi.string().required().messages(joiGeneralMessage),
+})

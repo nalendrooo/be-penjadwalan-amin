@@ -12,6 +12,17 @@ export const createKelas = async ({
 export const getAllKelas = async () => {
     return await db.class.findMany({
         include: {
+            scheduleClasses: {
+                select: {
+                    day: {
+                        select: {
+                            title: true
+                        }
+                    },
+                    endTime: true,
+                    startTime: true
+                }
+            },
             user: {
                 select: {
                     id: true,
@@ -60,7 +71,37 @@ export const getKelasById = async ({
     id
 }) => {
     return await db.class.findUnique({
-        where: { id }
+        where: { id },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    nama: true,
+                    email: true,
+                    telephone: true,
+                    mataPelajaranGuru: {
+                        select: {
+                            mataPelajaran: {
+                                select: {
+                                    title: true
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            scheduleClasses: {
+                select: {
+                    day: {
+                        select: {
+                            title: true
+                        }
+                    },
+                    endTime: true,
+                    startTime: true
+                }
+            }
+        }
     })
 }
 
@@ -139,7 +180,19 @@ export const getKelasBySiswaId = async ({ id }) => {
                 select: {
                     classStudent: true
                 }
+            },
+            scheduleClasses: {
+                select: {
+                    day: {
+                        select: {
+                            title: true
+                        }
+                    },
+                    endTime: true,
+                    startTime: true
+                }
             }
+
         }
     })
 }
@@ -161,6 +214,18 @@ export const getKelasByGuruId = async ({ id }) => {
                     nama: true,
                     email: true,
                     telephone: true,
+                }
+            },
+            scheduleClasses: {
+                select: {
+                    day: {
+                        select: {
+                            title: true,
+                            id: true
+                        }
+                    },
+                    endTime: true,
+                    startTime: true
                 }
             },
             _count: {

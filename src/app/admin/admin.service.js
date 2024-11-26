@@ -1,5 +1,6 @@
 import * as kelasRepository from '../kelas/kelas.prisma.js'
 import * as usersRepository from '../users/users.prisma.js'
+import * as jadwalKelasRepository from '../jadwal-kelas/jadwal-kelas.prisma.js'
 
 export const createClass = async (req, res) => {
      const { body } = req
@@ -56,6 +57,75 @@ export const getAllSiswa = async (req, res) => {
      return res.status(200).json({
           status: 'success',
           message: 'Data siswa berhasil diambil',
+          data
+     })
+}
+
+export const createJadwalKelas = async (req, res) => {
+     const { body, params } = req
+
+     const cekKelas = await kelasRepository.getKelasById({
+          id: Number(params.id)
+     })
+
+     if (!cekKelas) {
+          return res.status(400).json({
+               status: 'error',
+               message: 'Kelas tidak ditemukan'
+          })
+     }
+
+     const cekJadwalKelas = await jadwalKelasRepository.getJadwalKelasById({
+          classId: Number(params.id)
+     })
+
+     if (cekJadwalKelas) {
+          return res.status(400).json({
+               status: 'error',
+               message: 'Jadwal kelas sudah dibuat'
+          })
+     }
+
+     const data = await jadwalKelasRepository.createJadwalKelas({
+          data: {
+               ...body,
+               classId: Number(params.id)
+          }
+     })
+
+     return res.status(200).json({
+          status: 'success',
+          message: 'Jadwal kelas berhasil dibuat',
+          data
+     })
+}
+
+export const updateJadwalKelas = async (req, res) => {
+     const { body, params } = req
+
+     const cekKelas = await kelasRepository.getKelasById({
+          id: Number(params.id)
+     })
+
+     if (!cekKelas) {
+          return res.status(400).json({
+               status: 'error',
+               message: 'Kelas tidak ditemukan'
+          })
+     }
+
+
+     const data = await jadwalKelasRepository.updateJadwalKelas({
+          id: Number(params.id),
+          data: {
+               ...body,
+               classId: Number(params.id)
+          }
+     })
+
+     return res.status(200).json({
+          status: 'success',
+          message: 'Jadwal kelas berhasil diupdate',
           data
      })
 }
