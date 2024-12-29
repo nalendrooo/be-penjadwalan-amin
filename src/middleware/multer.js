@@ -4,6 +4,7 @@ import path from 'path';
 // Define the storage configuration
 const fileFilter = (req, file, cb) => {
     // Allowed file extensions
+    console.log(req.params)
     const filetypes = /jpeg|jpg|png|image/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = filetypes.test(file.mimetype);
@@ -18,7 +19,8 @@ const fileFilter = (req, file, cb) => {
 // Set storage configuration
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/assets/image'); // Folder tempat penyimpanan
+        // console.log(req.params)
+        cb(null, 'public/assets/' + req.params.disk); // Folder tempat penyimpanan
     },
     filename: (req, file, cb) => {
         const timestamp = Date.now();
@@ -33,6 +35,6 @@ const storage = multer.diskStorage({
 // Middleware konfigurasi upload dengan file filter dan batas ukuran file
 export const upload = multer({
     storage,
-    limits: { fileSize: 3 * 1024 * 1024 }, // Batas ukuran file maksimal 3MB
-    fileFilter, // Validasi tipe file
+    limits: { fileSize: 5 * 1024 * 1024 }, // Batas ukuran file maksimal 3MB
+    // fileFilter   , // Validasi tipe file
 });

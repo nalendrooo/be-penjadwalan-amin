@@ -1,14 +1,12 @@
 import { Router } from "express"
-import * as usersSchema from "../users/users.request.js"
-import * as usersService from "../users/users.service.js"
-import { validateRequest } from "../../middleware/validate-request.js";
 import { upload } from "../../middleware/multer.js";
 import multer from "multer";
 
 const route = Router()
 
-route.post('/single', (req, res, next) => {
+route.post('/single/:disk', (req, res, next) => {
     upload.single('image')(req, res, function (err) {
+
         // Error handling untuk ukuran file atau jenis file yang tidak valid
         if (err instanceof multer.MulterError) {
             // Jika error dari Multer (misal: ukuran file terlalu besar)
@@ -35,9 +33,12 @@ route.post('/single', (req, res, next) => {
         }
 
         // Berikan respons dengan nama file
+
         res.json({
-            fileName: req.file.filename,
-            // url: `http://localhost:8000/assets/image-products/${req.file.filename}`
+            filename: req.file.filename,
+            original_filename: req.file.originalname,
+            size_file: req.file.size,
+            type_file: req.file.mimetype
         });
     });
 });
@@ -73,7 +74,10 @@ route.post('/multiple', (req, res, next) => {
         // Ambil nama file dan kembalikan ke client
         const fileNames = files.map(file => file.filename);
         res.json({
-            fileNames,
+            filename: fileNames,
+            original_filename: files[0].originalname,
+            size_file: files[0].size,
+            type_file: files[0].mimetype
         });
     });
 });

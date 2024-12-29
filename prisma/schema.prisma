@@ -19,6 +19,7 @@ model User {
   email     String
   password  String
   telephone String?
+  profile   String?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -26,6 +27,7 @@ model User {
   classes           Class[]
   mataPelajaranGuru MataPelajaranGuru[]
   classStudent      ClassStudent[]
+  tugas             TugasSiswa[]
 
   @@unique([email])
   @@map("user")
@@ -85,7 +87,6 @@ model Class {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  cover       String
   userId      Int?     @map("user_id")
   isActive    Boolean  @default(true) @map("is_active")
   createdAt   DateTime @default(now()) @map("created_at")
@@ -93,8 +94,10 @@ model Class {
 
   user            User?           @relation(fields: [userId], references: [id])
   scheduleClasses ScheduleClass[]
-  Materi          Materi[]
+  materi          Materi[]
   classStudent    ClassStudent[]
+  tugas           Tugas[]
+  ujian           Ujian[]
 
   @@map("class")
 }
@@ -124,16 +127,81 @@ model ScheduleClass {
 }
 
 model Materi {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  filename    String
-  isActive    Boolean  @default(true) @map("is_active")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  classId     Int      @map("class_id")
+  id                Int      @id @default(autoincrement())
+  title             String
+  description       String
+  filename          String?
+  original_filename String?
+  size_file         Int?
+  type_file String?
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  classId           Int      @map("class_id")
 
   class Class @relation(fields: [classId], references: [id])
 
   @@map("materi")
+}
+
+model Tugas {
+  id                Int      @id @default(autoincrement())
+  title             String
+  classId           Int      @map("class_id")
+  description       String
+  filename          String?
+  original_filename String?
+  size_file         Int?
+  type_file String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  deadlineAt        DateTime @map("deadline_at")
+
+  class      Class        @relation(fields: [classId], references: [id])
+  tugasSiswa TugasSiswa[]
+
+  @@map("tugas")
+}
+
+model TugasSiswa {
+  id                Int     @id @default(autoincrement())
+  filename          String?
+  original_filename String?
+  size_file         Int?
+  type_file String?
+  tugasId           Int     @map("tugas_id")
+  userId            Int     @map("user_id")
+  nilai             Float?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  tugas Tugas @relation(fields: [tugasId], references: [id])
+  siswa User  @relation(fields: [userId], references: [id])
+
+  @@map("tugas_siswa")
+}
+
+model Ujian {
+  id                Int       @id @default(autoincrement())
+  title             String
+  description       String
+  filename          String?
+  original_filename String?
+  size_file         Int?
+  type_file String?
+  type              TypeUjian
+  dateTime          DateTime  @map("date_time")
+  startTime         String    @map("start_time")
+  endTime           String    @map("end_time")
+  kelasId           Int       @map("kelas_id")
+
+  class Class @relation(fields: [kelasId], references: [id])
+
+  @@map("ujian")
+}
+
+enum TypeUjian {
+  UAS
+  UTS
 }

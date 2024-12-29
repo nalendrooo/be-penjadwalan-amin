@@ -7,6 +7,7 @@ import mataPelajaranRoute from "./src/app/mata-pelajaran/mata-pelajaran.route.js
 import adminRoute from "./src/app/admin/admin.route.js";
 import guruRoute from "./src/app/guru/guru.route.js";
 import siswaRoute from "./src/app/siswa/siswa.route.js";
+import hariRoute from "./src/app/day/day.route.js";
 
 const app = express()
 const PORT = process.env.PORT || 9000
@@ -26,6 +27,7 @@ app.use('/mata-pelajaran', mataPelajaranRoute)
 app.use('/admin', adminRoute)
 app.use('/guru', guruRoute)
 app.use('/siswa', siswaRoute)
+app.use('/hari', hariRoute)
 
 app.listen(PORT, () => {
     console.log(`Server has running on port: ${PORT}`)

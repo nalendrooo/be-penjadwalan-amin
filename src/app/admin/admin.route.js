@@ -7,6 +7,7 @@ import { validateRequest } from "../../middleware/validate-request.js";
 
 const route = Router()
 
+route.get('/dashboard', adminService.getStatisticDashboard);
 route.get('/guru', adminService.getAllGuru);
 route.get('/siswa', adminService.getAllSiswa);
 route.get('/kelas', adminService.getAllKelas);
@@ -15,5 +16,6 @@ route.post('/kelas/:id/jadwal', validateRequest(adminSchema.jadwalKelasSchema), 
 route.put('/kelas/:id/jadwal', validateRequest(adminSchema.jadwalKelasSchema), adminService.updateJadwalKelas);
 route.post('/kelas', validateRequest(adminSchema.createKelasSchema), adminService.createClass);
 route.post('/guru/register/:role_id', validateRequest(usersSchema.createUserSchema), usersService.createUser);
+route.post('/guru/mata-pelajaran', validateRequest(adminSchema.assignGuruToMataPelajaranSchema), adminService.assignGuruToMataPelajaran);
 
 export default route    

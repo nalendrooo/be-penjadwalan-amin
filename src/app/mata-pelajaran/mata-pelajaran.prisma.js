@@ -32,3 +32,43 @@ export const getMataPelajaran = async ({
         }
     })
 }
+export const getMataPelajaranStatistik = async () => {
+
+
+    return await db.mataPelajaran.findMany({
+        orderBy: {
+            id: 'asc'
+        },
+        include: {
+            mataPelajaranGuru: {
+                select: {
+                    user: {
+                        select: {
+                            _count: {
+                                select: {
+                                    classes: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
+
+export const getMataPelajaranById = async ({
+    id
+}) => {
+    return await db.mataPelajaran.findUnique({ where: { id } })
+}
+
+export const deleteMataPelajaran = async ({
+    id
+}) => {
+    return await db.mataPelajaran.delete({ where: { id } })
+}
+
+export const countMataPelajaran = async () => {
+    return await db.mataPelajaran.count()
+}

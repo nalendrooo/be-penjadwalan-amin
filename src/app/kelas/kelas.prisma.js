@@ -157,6 +157,7 @@ export const getStudentsInKelas = async ({ id }) => {
     })
 }
 
+
 export const getKelasBySiswaId = async ({ id }) => {
     return await db.class.findMany({
         where: {
@@ -174,6 +175,68 @@ export const getKelasBySiswaId = async ({ id }) => {
                     nama: true,
                     email: true,
                     telephone: true,
+                    mataPelajaranGuru: {
+                        select: {
+                            mataPelajaran: {
+                                select: {
+                                    title: true
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            _count: {
+                select: {
+                    classStudent: true
+                }
+            },
+            scheduleClasses: {
+                select: {
+                    day: {
+                        select: {
+                            title: true
+                        }
+                    },
+                    endTime: true,
+                    startTime: true
+                }
+            }
+
+        }
+    })
+}
+export const getKelasBySiswaIdToday = async ({ id }) => {
+    return await db.class.findMany({
+        where: {
+            classStudent: {
+                some: {
+                    userId: id
+                }
+            },
+            scheduleClasses: {
+                some: {
+                    dayId: new Date().getDay()
+                }
+            },
+            isActive: true
+        },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    nama: true,
+                    email: true,
+                    telephone: true,
+                    mataPelajaranGuru: {
+                        select: {
+                            mataPelajaran: {
+                                select: {
+                                    title: true
+                                }
+                            }
+                        }
+                    }
                 }
             },
             _count: {
@@ -235,4 +298,8 @@ export const getKelasByGuruId = async ({ id }) => {
             }
         }
     })
+}
+
+export const countKelas = async () => {
+    return await db.class.count()
 }

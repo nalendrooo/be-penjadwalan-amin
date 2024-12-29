@@ -49,6 +49,15 @@ export const getUserByRole = async (role) => {
             email: true,
             nama: true,
             telephone: true,
+            mataPelajaranGuru: {
+                select: {
+                    mataPelajaran: {
+                        select: {
+                            title: true
+                        }
+                    }
+                }
+            }
         }
     })
 }
@@ -75,6 +84,7 @@ export const getUserById = async ({
             email: true,
             nama: true,
             telephone: true,
+            mataPelajaranGuru: true,
             userRole: {
                 select: {
                     role: {
@@ -114,6 +124,30 @@ export const cekUserNotJoinKelas = async ({
             email: true,
             nama: true,
             telephone: true,
+        }
+    })
+}
+
+export const countSiswa = async () => {
+    return await db.user.count({
+        where: {
+            userRole: {
+                some: {
+                    roleId: 3
+                }
+            }
+        }
+    })
+}
+
+export const countGuru = async () => {
+    return await db.user.count({
+        where: {
+            userRole: {
+                some: {
+                    roleId: 2
+                }
+            }
         }
     })
 }

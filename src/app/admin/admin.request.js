@@ -5,7 +5,7 @@ import { joiGeneralMessage } from '../../utils/joi.js'
 export const createKelasSchema = Joi.object({
     title: Joi.string().required().messages(joiGeneralMessage),
     description: Joi.string().required().messages(joiGeneralMessage),
-    cover: Joi.string().required().messages(joiGeneralMessage),
+    cover: Joi.string().messages(joiGeneralMessage),
 })
 
 export const addGuruToKelasSchema = Joi.object({
@@ -17,3 +17,8 @@ export const jadwalKelasSchema = Joi.object({
     startTime: Joi.string().required().messages(joiGeneralMessage),
     endTime: Joi.string().required().messages(joiGeneralMessage),
 })
+
+export const assignGuruToMataPelajaranSchema = Joi.object({
+    userId: Joi.number().required().messages(joiGeneralMessage),
+    mataPelajaranId: Joi.number().required().messages(joiGeneralMessage),
+})   

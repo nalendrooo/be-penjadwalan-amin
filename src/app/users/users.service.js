@@ -52,6 +52,7 @@ export const createUser = async (req, res) => {
         status: 'success',
         message: 'User berhasil dibuat',
         data: {
+            id: user.id,
             email: body.email
         }
     })

@@ -1,6 +1,8 @@
 import * as kelasRepository from '../kelas/kelas.prisma.js'
 import * as usersRepository from '../users/users.prisma.js'
 import * as jadwalKelasRepository from '../jadwal-kelas/jadwal-kelas.prisma.js'
+import * as mataPelajaranGuruRepository from '../mata-pelajaran-guru/mata-pelajaran-guru.prisma.js'
+import * as mataPelajaranRepository from '../mata-pelajaran/mata-pelajaran.prisma.js'
 
 export const createClass = async (req, res) => {
      const { body } = req
@@ -127,5 +129,79 @@ export const updateJadwalKelas = async (req, res) => {
           status: 'success',
           message: 'Jadwal kelas berhasil diupdate',
           data
+     })
+}
+
+export const assignGuruToMataPelajaran = async (req, res) => {
+     const { body } = req
+
+     const user = await usersRepository.getUserById({
+          id: body.userId
+     })
+
+     if (!user) {
+          return res.status(400).json({
+               status: 'error',
+               message: 'Guru tidak ditemukan'
+          })
+     }
+
+     if (user.userRole[0].role.nama !== 'guru') {
+          return res.status(400).json({
+               status: 'error',
+               message: 'User bukan guru'
+          })
+     }
+
+     if (user.mataPelajaranGuru.length > 0) {
+          return res.status(400).json({
+               status: 'error',
+               message: 'Guru sudah memiliki mata pelajaran'
+          })
+     }
+
+     const mataPelajaran = await mataPelajaranRepository.getMataPelajaranById({
+          id: body.mataPelajaranId
+     })
+
+     if (!mataPelajaran) {
+          return res.status(400).json({
+               status: 'error',
+               message: 'Mata pelajaran tidak ditemukan'
+          })
+     }
+
+     const data = await mataPelajaranGuruRepository.createMataPelajaranGuru({
+          data: {
+               ...body,
+          }
+     })
+
+     return res.status(200).json({
+          status: 'success',
+          message: 'Mata pelajaran guru berhasil ditambahkan',
+          data
+     })
+}
+
+export const getStatisticDashboard = async (req, res) => {
+     const totalKelas = await kelasRepository.countKelas()
+     const totalMapel = await mataPelajaranRepository.countMataPelajaran()
+     const totalGuru = await usersRepository.countGuru()
+     const totalSiswa = await usersRepository.countSiswa()
+     const dataMapel = await mataPelajaranRepository.getMataPelajaranStatistik()
+
+     const final = {
+          totalGuru,
+          totalKelas,
+          totalMapel,
+          totalSiswa,
+          mataPelajaran: dataMapel
+     }
+
+     return res.status(200).json({
+          status: 'success',
+          message: 'Data berhasil diambil',
+          data: final
      })
 }

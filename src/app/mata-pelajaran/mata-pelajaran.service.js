@@ -41,3 +41,28 @@ export const getMataPelajaran = async (req, res) => {
         data
     })
 };
+export const getMataPelajaranStatistik = async (req, res) => {
+    const { query } = req
+
+    const data = await mataPelajaranRepository.getMataPelajaranStatistik()
+
+    return res.status(200).json({
+        status: 'success',
+        message: 'Mata pelajaran berhasil diambil',
+        data
+    })
+};
+
+export const deleteMataPelajaran = async (req, res) => {
+    const { params } = req
+
+    const data = await mataPelajaranRepository.deleteMataPelajaran({
+        id: Number(params.id)
+    })
+
+    return res.status(200).json({
+        status: 'success',
+        message: 'Mata pelajaran berhasil dihapus',
+        data
+    })
+}
