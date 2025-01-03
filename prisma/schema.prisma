@@ -133,7 +133,7 @@ model Materi {
   filename          String?
   original_filename String?
   size_file         Int?
-  type_file String?
+  type_file         String?
   isActive          Boolean  @default(true) @map("is_active")
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
@@ -152,7 +152,7 @@ model Tugas {
   filename          String?
   original_filename String?
   size_file         Int?
-  type_file String?
+  type_file         String?
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
   deadlineAt        DateTime @map("deadline_at")
@@ -168,7 +168,7 @@ model TugasSiswa {
   filename          String?
   original_filename String?
   size_file         Int?
-  type_file String?
+  type_file         String?
   tugasId           Int     @map("tugas_id")
   userId            Int     @map("user_id")
   nilai             Float?
@@ -189,7 +189,7 @@ model Ujian {
   filename          String?
   original_filename String?
   size_file         Int?
-  type_file String?
+  type_file         String?
   type              TypeUjian
   dateTime          DateTime  @map("date_time")
   startTime         String    @map("start_time")

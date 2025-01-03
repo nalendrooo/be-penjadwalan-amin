@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
-import dotenv from 'dotenv';
+import path from 'path';
 import * as daysRepository from "../day/day.prisma.js";
 import * as roleRepository from "../role/role.prisma.js";
+import * as userRepository from "../users/users.prisma.js";
+import * as userRoleRepository from "../user-role/user-role.prisma.js";
 
 export const sendSeed = async (req, res) => {
     const days = await daysRepository.getDays()
@@ -29,7 +31,7 @@ export const sendSeed = async (req, res) => {
     await daysRepository.createDays()
 
     const salt = await bcrypt.genSalt()
-    const hashPassword = await bcrypt.hash(12345678, salt)
+    const hashPassword = await bcrypt.hash('12345678', salt)
 
     const user = await userRepository.createUser({
         email: 'admin@admin.com',
@@ -45,8 +47,32 @@ export const sendSeed = async (req, res) => {
         })
     }
 
+    await userRoleRepository.createUserRole({
+        userId: user.id,
+        roleId: 1
+    })
+
     return res.status(200).json({
         status: 'success',
         message: 'Hari dan Role berhasil dibuat'
     })
+}
+
+export const downloadFile = async (req, res) => {
+    const { folder, filename } = req.params;
+
+    // Path ke folder tempat file PDF disimpan
+    const filePath = path.join(process.cwd(), 'public/assets', folder, filename);
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}.pdf"`);
+    // Kirim file sebagai respons download
+    res.download(filePath, filename, (err) => {
+        if (err) {
+            console.error('Error saat mengirim file:', err);
+            res.status(404).send('File tidak ditemukan.');
+        }
+    });
+
+
 }
