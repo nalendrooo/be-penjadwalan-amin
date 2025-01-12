@@ -26,6 +26,7 @@ route.get('/kelas/:id/tugas/:id_tugas', guruService.getTugasById);
 route.get('/kelas/:id/tugas/:id_tugas/siswa', guruService.getSiswaInTugasById);
 route.post('/kelas/:id/ujian', validateRequest(guruSchema.createUjianSchema), guruService.createUjian);
 route.post('/kelas/:id/tugas/:id_tugas/update-nilai', validateRequest(guruSchema.updateNilaiTugasSiswaSchema), guruService.updateTugasSiswa);
+route.post('/kelas/:id/tugas/:id_tugas/update-comment', validateRequest(guruSchema.updateCommentTugasSiswaSchema), guruService.updateCommentTugasSiswa);
 route.get('/kelas/:id/ujian', guruService.getUjianInKelas);
 
 export default route    

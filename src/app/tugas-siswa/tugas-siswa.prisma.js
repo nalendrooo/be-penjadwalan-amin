@@ -40,6 +40,18 @@ export const updateNilaiTugasSiswa = async ({
     }
 })
 
+export const updateCommentTugasSiswa = async ({
+    id,
+    comment
+}) => await db.tugasSiswa.update({
+    where: {
+        id
+    },
+    data: {
+        comment
+    }
+})
+
 export const getTugasSiswaByIdTugas = async ({
     tugasId
 }) => {
@@ -63,7 +75,8 @@ export const getTugasSiswaByIdTugas = async ({
             },
             nilai: true,
             createdAt: true,
-            updatedAt: true
+            updatedAt: true,
+            comment: true
         }
     })
 }
@@ -98,6 +111,24 @@ export const getAllTugasSiswa = async ({
         select: {
             tugasId: true,
             nilai: true,
+            comment: true,
+            tugas: {
+                select: {
+                    id: true,
+                    title: true,
+                    createdAt: true,
+                    deadlineAt: true,
+                    class: {
+                        select: {
+                            user: {
+                                select: {
+                                    nama: true,
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     })
 }

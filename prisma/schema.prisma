@@ -166,6 +166,7 @@ model Tugas {
 model TugasSiswa {
   id                Int     @id @default(autoincrement())
   filename          String?
+  comment           String?
   original_filename String?
   size_file         Int?
   type_file         String?

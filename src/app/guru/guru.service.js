@@ -468,7 +468,19 @@ export const getUjianInKelas = async (req, res) => {
 
 export const updateTugasSiswa = async (req, res) => {
 
-    const data = await tugasSiswaRepository.updateNilaiTugasSiswa({
+    await tugasSiswaRepository.updateNilaiTugasSiswa({
+        ...req.body
+    })
+
+    return res.status(200).json({
+        status: 'success',
+        message: 'Update berhasil ',
+    })
+}
+
+export const updateCommentTugasSiswa = async (req, res) => {
+
+    await tugasSiswaRepository.updateCommentTugasSiswa({
         ...req.body
     })
 
