@@ -101,12 +101,16 @@ export const getTugasSiswaById = async ({
 }
 
 export const getAllTugasSiswa = async ({
-    userId
+    userId,
+    tugasId
 }) => {
     return await db.tugasSiswa.findMany({
         // by: ['filename'],
         where: {
-            userId
+            userId,
+            tugas: {
+                id: tugasId
+            }
         },
         select: {
             tugasId: true,

@@ -164,7 +164,8 @@ export const getStatisticTugas = async (req, res) => {
     })
 
     const tugasSiswa = await tugasSiswaRepository.getAllTugasSiswa({
-        userId: req.body.user.id
+        userId: req.body.user.id,
+        tugasId: Number(params.id)
     })
 
     return res.status(200).json({
