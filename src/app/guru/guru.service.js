@@ -407,6 +407,7 @@ export const getSiswaInTugasById = async (req, res) => {
         message: 'Tugas berhasil diambil',
         data: {
             submited: getSiswaInTugas,
+            title: data.title,
             notSubmited
         }
     })

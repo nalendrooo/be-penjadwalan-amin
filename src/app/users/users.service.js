@@ -83,7 +83,8 @@ export const loginUser = async (req, res) => {
             email: user.email,
             id: user.id,
             nama: user?.nama,
-            role: user?.userRole[0].role.nama
+            role: user?.userRole[0].role.nama,
+            mapel: user?.mataPelajaranGuru?.[0]?.mataPelajaran?.title
         },
         process.env.ACCESS_TOKEN,
         // { expiresIn: '1d' }

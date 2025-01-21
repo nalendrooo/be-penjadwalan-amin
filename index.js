@@ -8,12 +8,17 @@ import adminRoute from "./src/app/admin/admin.route.js";
 import guruRoute from "./src/app/guru/guru.route.js";
 import siswaRoute from "./src/app/siswa/siswa.route.js";
 import hariRoute from "./src/app/day/day.route.js";
+import path from "path";
 
 const app = express()
 const PORT = process.env.PORT || 9000
 
 app.use(cors({ credentials: true, origin: '*' }))
 app.use(express.json())
+
+const publicPath = path.join(process.cwd(), 'public'); // Path ke folder public
+app.use(express.static(publicPath));
+
 app.get('/', (req, res) => {
     res.status(200).json({
         status: 'success',
