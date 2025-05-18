@@ -23,6 +23,16 @@ export const getAllKelas = async () => {
                     startTime: true
                 }
             },
+            classStudent: {
+                select: {
+                    user: {
+                        select: {
+                            nama: true,
+                            nis: true
+                        }
+                    }
+                }
+            },
             user: {
                 select: {
                     id: true,

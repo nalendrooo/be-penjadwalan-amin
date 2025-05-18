@@ -10,6 +10,8 @@ export const createUser = async (data, hashedPassword) => {
             email: data.email,
             nama: data?.nama,
             telephone: data?.telephone,
+            wali: data?.wali,
+            nis: data?.nis
         },
     })
 }
