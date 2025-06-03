@@ -7,6 +7,7 @@ import { verifyToken } from "../../middleware/verif-token.js";
 const route = Router()
 
 route.post('/login', validateRequest(usersSchema.loginUserSchema), usersService.loginUser);
+route.post('/update-password', validateRequest(usersSchema.loginUserSchema), usersService.updatePasswordByEmail);
 route.get('/profile', verifyToken, usersService.getProfile);
 
 

@@ -100,6 +100,20 @@ export const getUserById = async ({
     })
 }
 
+export const updatePasswordByEmail = async ({
+    email,
+    hashedPassword
+}) => {
+    return await db.user.updateMany({
+        where: {
+            email
+        },
+        data: {
+            password: hashedPassword
+        }
+    })
+}
+
 export const cekUserNotJoinKelas = async ({
     kelasId,
     ids

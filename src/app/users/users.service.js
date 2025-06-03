@@ -58,6 +58,7 @@ export const createUser = async (req, res) => {
     })
 }
 
+
 export const loginUser = async (req, res) => {
     const { body } = req
     const user = await userRepository.cekEmailExist({ email: body.email })
@@ -94,6 +95,28 @@ export const loginUser = async (req, res) => {
         status: 'success',
         message: 'User berhasil login',
         data: { token }
+    })
+}
+export const updatePasswordByEmail = async (req, res) => {
+    const { body } = req
+    const user = await userRepository.cekEmailExist({ email: body.email })
+
+    if (!user) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Email tidak terdaftar'
+        })
+    }
+
+    const salt = await bcrypt.genSalt()
+    const hashPassword = await bcrypt.hash(body.password, salt)
+
+    const data = await userRepository.updatePasswordByEmail(user.id, hashPassword)
+
+    return res.status(200).json({
+        status: 'success',
+        message: 'User berhasil direset',
+        data
     })
 }
 
