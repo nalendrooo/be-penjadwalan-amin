@@ -5,7 +5,6 @@ import { joiGeneralMessage } from '../../utils/joi.js'
 export const createUserSchema = Joi.object({
     email: Joi.string().email().required().messages(joiGeneralMessage),
     password: Joi.string().required().min(8).max(12).messages(joiGeneralMessage),
-    wali: Joi.string().messages(joiGeneralMessage),
     nis: Joi.string().messages(joiGeneralMessage),
     nama: Joi.string().required().messages(joiGeneralMessage),
     telephone: Joi.string().required().messages(joiGeneralMessage),
