@@ -99,12 +99,21 @@ export const loginUser = async (req, res) => {
 }
 export const updatePasswordByEmail = async (req, res) => {
     const { body } = req
+    const user = await userRepository.getUserById({ id: body.id })
+
+    if (!user) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'Email tidak terdaftar'
+        })
+    }
 
     const salt = await bcrypt.genSalt()
     const hashPassword = await bcrypt.hash(body.password, salt)
-    const data = await userRepository.updatePasswordByEmail(body.id, hashPassword)
-    console.log('body', body)
-    console.log('password', hashPassword)
+    const data = await userRepository.updatePasswordByEmail({
+        id: body.id,
+        hashedPassword: hashPassword
+    })
     return res.status(200).json({
         status: 'success',
         message: 'User berhasil direset',
