@@ -16,7 +16,7 @@ datasource db {
 model User {
   id        Int      @id @unique @default(autoincrement())
   nama      String?
-  email     String
+  email     String   @unique
   password  String
   telephone String?
   wali      String?
@@ -31,7 +31,6 @@ model User {
   classStudent      ClassStudent[]
   tugas             TugasSiswa[]
 
-  @@unique([email])
   @@map("user")
 }
 

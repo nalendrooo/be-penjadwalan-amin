@@ -101,12 +101,12 @@ export const getUserById = async ({
 }
 
 export const updatePasswordByEmail = async ({
-    email,
+    id,
     hashedPassword
 }) => {
     return await db.user.update({
         where: {
-            email
+            id
         },
         data: {
             password: hashedPassword
