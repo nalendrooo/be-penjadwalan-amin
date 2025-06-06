@@ -99,14 +99,6 @@ export const loginUser = async (req, res) => {
 }
 export const updatePasswordByEmail = async (req, res) => {
     const { body } = req
-    const user = await userRepository.cekEmailExist({ email: body.email })
-
-    if (!user) {
-        return res.status(400).json({
-            status: 'error',
-            message: 'Email tidak terdaftar'
-        })
-    }
 
     const salt = await bcrypt.genSalt()
     const hashPassword = await bcrypt.hash(body.password, salt)
