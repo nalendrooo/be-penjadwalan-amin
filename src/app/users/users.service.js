@@ -110,7 +110,7 @@ export const updatePasswordByEmail = async (req, res) => {
 
     const salt = await bcrypt.genSalt()
     const hashPassword = await bcrypt.hash(body.password, salt)
-
+console.log(body)
     const data = await userRepository.updatePasswordByEmail(body.email, hashPassword)
 
     return res.status(200).json({
