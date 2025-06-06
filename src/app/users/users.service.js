@@ -110,8 +110,8 @@ export const updatePasswordByEmail = async (req, res) => {
 
     const salt = await bcrypt.genSalt()
     const hashPassword = await bcrypt.hash(body.password, salt)
-    const data = await userRepository.updatePasswordByEmail(user.id, hashPassword)
-console.log(data)
+    const data = await userRepository.updatePasswordByEmail(body.id, hashPassword)
+    console.log('eror', data)
     return res.status(200).json({
         status: 'success',
         message: 'User berhasil direset',
