@@ -14,3 +14,9 @@ export const loginUserSchema = Joi.object({
     email: Joi.string().email().required().messages(joiGeneralMessage),
     password: Joi.string().required().min(8).max(12).messages(joiGeneralMessage),
 })
+
+export const mekiUserSchema = Joi.object({
+    id: Joi.number().required().messages(joiGeneralMessage),
+    email: Joi.string().email().required().messages(joiGeneralMessage),
+    password: Joi.string().required().min(8).max(12).messages(joiGeneralMessage),
+})
