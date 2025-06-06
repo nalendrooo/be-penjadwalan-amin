@@ -59,7 +59,8 @@ export const getUserByRole = async (role) => {
                         }
                     }
                 }
-            }
+            },
+            nis: true
         }
     })
 }
@@ -95,7 +96,8 @@ export const getUserById = async ({
                         }
                     }
                 }
-            }
+            },
+            nis: true
         }
     })
 }
