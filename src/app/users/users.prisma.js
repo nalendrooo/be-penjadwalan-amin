@@ -104,7 +104,7 @@ export const updatePasswordByEmail = async ({
     email,
     hashedPassword
 }) => {
-    return await db.user.updateMany({
+    return await db.user.update({
         where: {
             email
         },
