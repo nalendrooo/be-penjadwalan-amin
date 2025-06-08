@@ -40,6 +40,7 @@ export const getSiswaInKelas = async ({
                     email: true,
                     nama: true,
                     telephone: true,
+                    nis: true
                 }
             }
         }
